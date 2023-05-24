@@ -80,8 +80,12 @@ _, frame = cap.read()
 h, w, c = frame.shape
 
 #print(h,w)
+cropped_images = []
+
 
 while True:
+    if len(cropped_images)> 100:
+        cropped_images = []
     if keyboard.is_pressed('q'):  # Change 'q' to the desired key
         break
     _, frame = cap.read()
@@ -111,21 +115,25 @@ while True:
             
             start =time.time()
             
-            img_crop=frame[y_min-15:y_max+15,x_min-15:x_max+15]
+            img_crop= frame[y_min-15:y_max+15,x_min-15:x_max+15]
+            img_crop = Image.fromarray(np.uint8(img_crop))
+            #print('before',img_crop)
+            #cropped_images.append(img_crop[0])
             
-            try:
-                img_crop = cv2.cvtColor(img_crop,cv2.COLOR_BGR2RGB)
-                
-            except:
-                #print("Next entry.")
-                continue
-
-                
-            cv2.imwrite('img_crop/' + 'crp' + '.jpg', img_crop)
-            address = r'img_crop\crp.jpg'
-            Images = glob.glob(address)
-            
-            img_crop = Image.open(Images[0]).convert("RGB")
+            #try:
+            #    img_crop = cv2.cvtColor(img_crop,cv2.COLOR_BGR2RGB)
+            #    
+            #except:
+            #    #print("Next entry.")
+            #    continue
+            #    
+            #cv2.imwrite('img_crop/' + 'crp' + '.jpg', img_crop)
+            #address = r'img_crop\crp.jpg'
+            #Images = glob.glob(address)
+            #
+            #img_crop = Image.open(Images[0]).convert("RGB")
+            #print("after",img_crop)
+            #img_crop = cropped_images[0].resize((150, 150))
             img_crop = img_crop.resize((150, 150))
             img_crop = np.array(img_crop)
             img_crop = np.array(img_crop, dtype='float32')
